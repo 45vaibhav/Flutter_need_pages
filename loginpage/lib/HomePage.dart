@@ -35,13 +35,12 @@ class _HomepageState extends State<Homepage> {
     return Scaffold(
       backgroundColor: Colors.cyanAccent,
       appBar: AppBar(
-        title: const Text("Home Page"),
+        title: Text("Home Page"),
         backgroundColor: Colors.amber,
       ),
       body: Column(
         children: [
           SizedBox(height: 20),
-
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: TextField(
@@ -52,7 +51,6 @@ class _HomepageState extends State<Homepage> {
               ),
             ),
           ),
-
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: TextField(
@@ -77,7 +75,7 @@ class _HomepageState extends State<Homepage> {
                 if (!snapshot.hasData) {
                   return  CircularProgressIndicator();
                 }
-
+                else{
                 return ListView(
                   children: snapshot.data!.docs.map((doc) {
                     return ListTile(
@@ -87,6 +85,7 @@ class _HomepageState extends State<Homepage> {
                         );
                   }).toList(),
                 );
+                }
               },
             ),
           ),
