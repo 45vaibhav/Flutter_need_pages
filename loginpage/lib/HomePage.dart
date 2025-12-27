@@ -1,67 +1,96 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class Homepage extends StatelessWidget {
-  Homepage({super.key});
+class Homepage extends StatefulWidget {
+   Homepage({super.key});
 
+  @override
+  State<Homepage> createState() => _HomepageState();
+}
+
+class _HomepageState extends State<Homepage> {
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
 
-  void addData() async{
-    var user = {"name": nameController.text, "email": emailController.text};
-    var data= FirebaseFirestore.instance.collection("user");
-    data.add(user);
+  void addData() async {
+    var user = {
+      "name": nameController.text,
+      "email": emailController.text
+    };
+    await FirebaseFirestore.instance.collection("user").add(user);
     print("data added");
     nameController.clear();
     emailController.clear();
   }
-  void getData(){
-   var myData=FirebaseFirestore.instance.collection("user").get();
-   
+  void deleteData(String docId) async {
+    await FirebaseFirestore.instance
+        .collection("user")
+        .doc(docId)
+        .delete();
+        print("data deleted");
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.cyanAccent,
-      appBar: AppBar(title: Text("Home Page"), backgroundColor: Colors.amber),
-      body: Center(
-        child: Column(
-          children: [
-            SizedBox(height: 20),
-            Container(
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: TextField(
-                  controller: nameController,
-                  decoration: InputDecoration(
-                    labelText: "Enter name",
-                    
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(3),
-                    ),
-                  ),
-                ),
+      appBar: AppBar(
+        title: const Text("Home Page"),
+        backgroundColor: Colors.amber,
+      ),
+      body: Column(
+        children: [
+          SizedBox(height: 20),
+
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: TextField(
+              controller: nameController,
+              decoration: const InputDecoration(
+                labelText: "Enter name",
+                border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: TextField(
-                controller: emailController,
-                decoration: InputDecoration(
-                  labelText: "Enter email",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(3),
-                  ),
-                ),
+          ),
+
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: TextField(
+              controller: emailController,
+              decoration: const InputDecoration(
+                labelText: "Enter email",
+                border: OutlineInputBorder(),
               ),
             ),
-        
-            ElevatedButton(onPressed: addData, child: Text("add")),
-          ],
-        ),
+          ),
+
+          ElevatedButton(
+            onPressed: addData,
+            child: const Text("Add"),
+          ),
+         SizedBox(height: 20),
+          Expanded(
+            child: StreamBuilder(
+              stream:
+                  FirebaseFirestore.instance.collection("user").snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return  CircularProgressIndicator();
+                }
+
+                return ListView(
+                  children: snapshot.data!.docs.map((doc) {
+                    return ListTile(
+                        title: Text(doc['name']),
+                        subtitle: Text(doc['email']),
+                        trailing: ElevatedButton(  onPressed: () => deleteData(doc.id), child: Text("delete user"))     
+                        );
+                  }).toList(),
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
