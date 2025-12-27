@@ -45,7 +45,7 @@ class _HomepageState extends State<Homepage> {
             padding:EdgeInsets.all(10.0),
             child: TextField(
               controller: nameController,
-              decoration: const InputDecoration(
+              decoration:InputDecoration(
                 labelText: "Enter name",
                 border: OutlineInputBorder(),
               ),
@@ -55,7 +55,7 @@ class _HomepageState extends State<Homepage> {
             padding:EdgeInsets.all(10.0),
             child: TextField(
               controller: emailController,
-              decoration: const InputDecoration(
+              decoration:InputDecoration(
                 labelText: "Enter email",
                 border: OutlineInputBorder(),
               ),
