@@ -42,7 +42,7 @@ class _HomepageState extends State<Homepage> {
         children: [
           SizedBox(height: 20),
           Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding:EdgeInsets.all(10.0),
             child: TextField(
               controller: nameController,
               decoration: const InputDecoration(
@@ -52,7 +52,7 @@ class _HomepageState extends State<Homepage> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding:EdgeInsets.all(10.0),
             child: TextField(
               controller: emailController,
               decoration: const InputDecoration(
@@ -64,7 +64,7 @@ class _HomepageState extends State<Homepage> {
 
           ElevatedButton(
             onPressed: addData,
-            child: const Text("Add"),
+            child:  Text("Add"),
           ),
          SizedBox(height: 20),
           Expanded(
